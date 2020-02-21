@@ -1,13 +1,12 @@
 package com.mapbox.navigation.core.telemetry
 
 import android.location.Location
+import android.util.Log
 import com.mapbox.android.core.location.LocationEngineCallback
 import com.mapbox.android.core.location.LocationEngineResult
-import com.mapbox.navigation.base.logger.model.Message
 import com.mapbox.navigation.base.trip.model.RouteProgress
 import com.mapbox.navigation.core.telemetry.MapboxNavigationTelemetry.MAX_TIME_LOCATION_COLLECTION
 import com.mapbox.navigation.core.trip.session.RouteProgressObserver
-import com.mapbox.navigation.logger.MapboxLogger
 import com.mapbox.navigation.utils.thread.ThreadController
 import com.mapbox.navigation.utils.thread.monitorChannelWithException
 import com.mapbox.navigation.utils.time.Time
@@ -156,7 +155,7 @@ internal class TelemetryLocationAndProgressDispatcher :
     }
 
     override fun onFailure(exception: java.lang.Exception) {
-        MapboxLogger.e(MapboxNavigationTelemetry.TAG, Message("Location engine returned an error $exception"))
+        Log.e(MapboxNavigationTelemetry.TAG, "Location engine returned an error $exception")
     }
 
     fun getRouteProgressChannel(): ReceiveChannel<RouteProgressWithTimeStamp> = channelOnRouteProgress

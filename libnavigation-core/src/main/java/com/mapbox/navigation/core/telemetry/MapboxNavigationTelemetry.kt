@@ -3,6 +3,7 @@ package com.mapbox.navigation.core.telemetry
 import android.content.Context
 import android.location.Location
 import android.os.Build
+import android.util.Log
 import com.google.gson.Gson
 import com.mapbox.android.core.location.LocationEngine
 import com.mapbox.android.core.location.LocationEngineRequest
@@ -10,8 +11,6 @@ import com.mapbox.android.telemetry.AppUserTurnstile
 import com.mapbox.android.telemetry.MapboxTelemetry
 import com.mapbox.android.telemetry.TelemetryUtils
 import com.mapbox.api.directions.v5.models.DirectionsRoute
-import com.mapbox.navigation.base.logger.model.Message
-import com.mapbox.navigation.base.logger.model.Tag
 import com.mapbox.navigation.base.trip.model.RouteProgressState
 import com.mapbox.navigation.core.BuildConfig
 import com.mapbox.navigation.core.MapboxNavigation
@@ -31,7 +30,6 @@ import com.mapbox.navigation.core.telemetry.telemetryevents.TelemetryStep
 import com.mapbox.navigation.core.telemetry.telemetryevents.TelemetryUserFeedback
 import com.mapbox.navigation.core.trip.session.OffRouteObserver
 import com.mapbox.navigation.core.trip.session.TripSessionStateObserver
-import com.mapbox.navigation.logger.MapboxLogger
 import com.mapbox.navigation.utils.exceptions.NavigationException
 import com.mapbox.navigation.utils.thread.ThreadController
 import com.mapbox.navigation.utils.thread.ifChannelException
@@ -78,7 +76,7 @@ internal object MapboxNavigationTelemetry : MapboxNavigationTelemetryInterface {
     // Public constants
     const val LOCATION_BUFFER_MAX_SIZE = 20
     const val MAX_TIME_LOCATION_COLLECTION = 20000L
-    val TAG = Tag("MAPBOX_TELEMETRY")
+    val TAG = "MAPBOX_TELEMETRY"
 
     // Private variables
     private lateinit var context: Context
@@ -157,7 +155,7 @@ internal object MapboxNavigationTelemetry : MapboxNavigationTelemetryInterface {
         override fun onOffRouteStateChanged(offRoute: Boolean) {
             when (offRouteProcessing.compareAndSet(false, true)) {
                 true -> {
-                    MapboxLogger.i(TAG, Message("OffRoute message ignored. Previous message processing in progress"))
+                    Log.i(TAG, "OffRoute message ignored. Previous message processing in progress")
                     dynamicValues.timeOfRerouteEvent.set(Time.SystemImpl.millis())
                 }
                 false -> {
@@ -350,12 +348,12 @@ internal object MapboxNavigationTelemetry : MapboxNavigationTelemetryInterface {
                     false -> {
                         endSession()
                         sessionStartHelper(directionsRoute, callbackDispatcher.getLastLocation())
-                        MapboxLogger.e(TAG, Message("sessionEnd() not called. Calling it by default"))
+                        Log.e(TAG, "sessionEnd() not called. Calling it by default")
                     }
                 }
             }
         }
-                ?: MapboxLogger.e(TAG, Message("Telemetry received a null DirectionsRoute. Session not started"))
+                ?: Log.e(TAG, "Telemetry received a null DirectionsRoute. Session not started")
     }
 
     /**
