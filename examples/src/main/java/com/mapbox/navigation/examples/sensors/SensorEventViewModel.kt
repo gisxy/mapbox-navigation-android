@@ -5,7 +5,6 @@ import android.content.Context
 import android.hardware.SensorEvent
 import android.hardware.SensorManager
 import androidx.lifecycle.AndroidViewModel
-import timber.log.Timber
 
 class SensorEventViewModel(
     application: Application
@@ -17,14 +16,12 @@ class SensorEventViewModel(
     var eventEmitter: ((SensorEvent) -> Unit) = { }
 
     init {
-        Timber.i("location_debug register sensors")
         navigationSensorManager.start { event ->
             eventEmitter.invoke(event)
         }
     }
 
     override fun onCleared() {
-        Timber.i("location_debug unregister listeners")
         navigationSensorManager.stop()
         eventEmitter = { }
 
