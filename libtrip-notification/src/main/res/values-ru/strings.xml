@@ -1,13 +1,13 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Notification Strings -->
-    <string name="end_navigation">Завершить</string>
-    <string name="channel_name">Оповещения навигации</string>
-    <string name="notification_arrival_time_format">Время прибытия %s</string>
-    <string name="kilometers">км</string>
-    <string name="meters">м</string>
-    <string name="miles">миль</string>
-    <string name="feet">футов</string>
-    <string name="eta_format">Ожидаемое прибытие %s</string>
+    <string name="end_navigation">Конец навигации</string>
+    <string name="channel_name" tools:ignore="MissingTranslation">Уведомления навигации</string>
+    <string name="notification_arrival_time_format" tools:ignore="MissingTranslation">Прибытие через %s</string>
+    <string name="kilometers" tools:ignore="MissingTranslation">км</string>
+    <string name="meters" tools:ignore="MissingTranslation">м</string>
+    <string name="miles" tools:ignore="MissingTranslation">миль</string>
+    <string name="feet" tools:ignore="MissingTranslation">футов</string>
+    <string name="eta_format" tools:ignore="MissingTranslation">Ожидаемое время: %s</string>
 
     <!-- Time formatting -->
     <plurals name="numberOfDays">
@@ -16,8 +16,6 @@
         <item quantity="many">дней</item>
         <item quantity="other">дней</item>
     </plurals>
-    <!-- Hour -->
-    <string name="hr">ч.</string>
     <!-- Minute -->
-    <string name="min">мин.</string>
+    <string name="min" tools:ignore="MissingTranslation">мин</string>
 </resources>
