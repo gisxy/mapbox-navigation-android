@@ -5,7 +5,6 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import com.mapbox.navigation.navigator.SensorMapper
-import timber.log.Timber
 
 class NavigationSensorManager(
     private val sensorManager: SensorManager
@@ -23,8 +22,7 @@ class NavigationSensorManager(
             }
             .filterNotNull()
         sensorList.forEach { sensor ->
-            Timber.i("location_debug register sensor $sensor ")
-            sensorManager.registerListener(this, sensor, toSamplingPeriodUs(10))
+            sensorManager.registerListener(this, sensor, toSamplingPeriodUs(400))
         }
     }
 

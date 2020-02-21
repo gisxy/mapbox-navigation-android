@@ -4,6 +4,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.os.Build
 import android.os.SystemClock
+import android.util.Log
 import com.mapbox.navigator.Axes3D
 import com.mapbox.navigator.NavigatorSensorData
 import com.mapbox.navigator.SensorData
@@ -52,7 +53,10 @@ private fun SensorEvent.toSensorType(): SensorType? {
         Sensor.TYPE_GYROSCOPE_UNCALIBRATED -> SensorType.GYROSCOPE
         Sensor.TYPE_GRAVITY -> SensorType.GRAVITY
         Sensor.TYPE_PRESSURE -> SensorType.PRESSURE
-        else -> null
+        else -> {
+            Log.e("UnsupportedSensorEvent", "This type of sensor event is not supported: ${this.sensor.name}")
+            null
+        }
     }
 }
 
