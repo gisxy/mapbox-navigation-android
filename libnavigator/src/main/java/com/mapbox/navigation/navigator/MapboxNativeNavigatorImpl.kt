@@ -56,9 +56,9 @@ object MapboxNativeNavigatorImpl : MapboxNativeNavigator {
         navigator.updateLocation(rawLocation.toFixLocation(Date()))
 
     override fun updateSensorEvent(sensorEvent: SensorEvent): Boolean {
-        val sensorData = sensorEvent.toSensorData()
-        return if (sensorData != null) {
-            navigator.updateSensorData(sensorData)
+        val navigatorSensorData = sensorEvent.toNavigatorSensorData()
+        return if (navigatorSensorData != null) {
+            navigator.updateSensorData(navigatorSensorData)
         } else false
     }
 
