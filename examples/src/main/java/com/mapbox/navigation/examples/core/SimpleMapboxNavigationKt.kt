@@ -113,8 +113,7 @@ class SimpleMapboxNavigationKt : AppCompatActivity(), OnMapReadyCallback {
             Utils.getMapboxAccessToken(this),
             navigationOptions = newOptions
         )
-
-        mapboxNavigation = MapboxNavigation(applicationContext, Utils.getMapboxAccessToken(this))
+        
         sensorEventViewModel = ViewModelProviders.of(this).get(SensorEventViewModel::class.java)
         sensorEventViewModel.eventEmitter = { sensorEvent ->
             mapboxNavigation.updateSensorEvent(sensorEvent)
