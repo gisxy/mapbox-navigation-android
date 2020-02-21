@@ -213,7 +213,6 @@ internal object MapboxNavigationTelemetry : MapboxNavigationTelemetryInterface {
         postUserEventDelegate = postUserFeedbackEventAfterInit // now that the object has been initialized we can post user feedback events
         registerForNotification(mapboxNavigation, locationEngineRequest)
         mapboxTelemetry = telemetry
-        mapboxTelemetry.enable()
         postTurnstileEvent()
         true
     }

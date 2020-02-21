@@ -3,6 +3,7 @@ package com.mapbox.navigation.core.metrics
 import androidx.annotation.StringDef
 import com.google.gson.Gson
 import com.mapbox.android.telemetry.Event
+import com.mapbox.navigation.core.telemetry.NavigationAppUserTurnstileEvent
 
 interface MetricEvent {
 

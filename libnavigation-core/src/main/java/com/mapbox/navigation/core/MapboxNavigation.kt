@@ -151,6 +151,8 @@ constructor(
         directionsSession.registerRoutesObserver(internalRoutesObserver)
         directionsSession.registerRoutesObserver(navigationSession)
         ifNonNull(accessToken) { token ->
+            val mapboxMetricsReporter = MapboxMetricsReporter(context, token, obtainUserAgent())
+            mapboxMetricsReporter.init()
             // Initialize telemetry. This will cause a turnstile event to be sent to the back end servers
             MapboxNavigationTelemetry.initialize(context.applicationContext,
                     token,
@@ -158,7 +160,7 @@ constructor(
                     locationEngine,
                     MapboxTelemetry(context, token, obtainUserAgent()),
                     locationEngineRequest,
-                    MapboxMetricsReporter(context, token, obtainUserAgent()))
+                    mapboxMetricsReporter)
         }
 
         val notification: TripNotification = NavigationModuleProvider.createModule(
