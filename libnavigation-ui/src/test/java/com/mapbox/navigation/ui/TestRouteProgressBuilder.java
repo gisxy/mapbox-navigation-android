@@ -4,13 +4,17 @@ import com.mapbox.api.directions.v5.models.DirectionsRoute;
 import com.mapbox.api.directions.v5.models.LegStep;
 import com.mapbox.geojson.Point;
 import com.mapbox.geojson.utils.PolylineUtils;
+import com.mapbox.navigation.base.trip.model.RouteLegProgress;
 import com.mapbox.navigation.base.trip.model.RouteProgress;
+import com.mapbox.navigation.base.trip.model.RouteStepProgress;
 
 import java.util.List;
 
 import static com.mapbox.core.constants.Constants.PRECISION_6;
 
 class TestRouteProgressBuilder {
+
+  final double ONE_SECOND_IN_MILLISECONDS = 1000.0;
 
   RouteProgress buildTestRouteProgress(DirectionsRoute route,
                                        double stepDistanceRemaining,
@@ -32,18 +36,31 @@ class TestRouteProgressBuilder {
       upcomingStepPoints = buildStepPointsFromGeometry(upcomingStepGeometry);
     }
 
+    // SBNOTE: this is probably not 100% correct but it's correct enough for the tests i'm working
+    // on to pass.
+    float distanceTraveled = (float)(currentStep.distance() - distanceRemaining);
+    RouteStepProgress.Builder stepProgressBuilder = new RouteStepProgress.Builder();
+    stepProgressBuilder.stepIndex(stepIndex);
+    stepProgressBuilder.step(currentStep);
+    stepProgressBuilder.distanceTraveled(distanceTraveled);
+    stepProgressBuilder.fractionTraveled((float)(distanceTraveled / currentStep.distance()));
+    stepProgressBuilder.distanceRemaining((float)stepDistanceRemaining);
+    stepProgressBuilder.durationRemaining((long) (legDurationRemaining  / ONE_SECOND_IN_MILLISECONDS));
+
+    double routeLegDistanceTraveled = route.legs().get(0).distance() - legDistanceRemaining;
+    RouteLegProgress.Builder legProgressBuilder = new RouteLegProgress.Builder();
+    legProgressBuilder.currentStepProgress(stepProgressBuilder.build());
+    legProgressBuilder.legIndex(legIndex);
+    legProgressBuilder.routeLeg(route.legs().get(0));
+    legProgressBuilder.distanceTraveled((float) routeLegDistanceTraveled);
+    legProgressBuilder.distanceRemaining((float) legDurationRemaining);
+    legProgressBuilder.upcomingStep(upcomingStep);
+
     return new RouteProgress.Builder()
-      // .stepDistanceRemaining(stepDistanceRemaining)
-      // .legDistanceRemaining(legDistanceRemaining)
-      // .legDurationRemaining(legDurationRemaining)
-      // .distanceRemaining((float)distanceRemaining)
-      // .route(route)
-      // .currentStep(currentStep)
-      // .currentStepPoints(currentStepPoints)
-      // .upcomingStepPoints(upcomingStepPoints)
-      // .stepIndex(stepIndex)
-      // .legIndex(legIndex)
-      // .inTunnel(false)
+            .distanceRemaining((float) legDistanceRemaining)
+            .upcomingStepPoints(currentStepPoints)
+            .currentLegProgress(legProgressBuilder.build())
+            .route(route)
       .build();
   }
 
