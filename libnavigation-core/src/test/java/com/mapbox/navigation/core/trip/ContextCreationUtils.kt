@@ -18,6 +18,9 @@ import io.mockk.just
 import io.mockk.mockk
 import java.util.Locale
 
+const val MAPBOX_TEST_VENDOR_ID = "mapboxVendorId"
+const val MAPBOX_TEST_TELEMETRY_STATE = "mapboxTelemetryState"
+const val MAPBOX_TEST_TELEMETRY_ENABLED = "ENABLED"
 fun createContext(): Context {
     val localLocationEngine: LocationEngine = mockk(relaxed = true)
     val mockedContext = mockk<Context>()
@@ -46,14 +49,21 @@ fun createContext(): Context {
     every { mockedContext.applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager } returns mockk(relaxed = true)
     every { mockedContext.getSharedPreferences(MAPBOX_SHARED_PREFERENCES, Context.MODE_PRIVATE) } returns mockk(relaxed = true)
     every { mockedContext.applicationContext.getSharedPreferences(MAPBOX_SHARED_PREFERENCES, Context.MODE_PRIVATE) } returns mockk(relaxed = true)
+    every { mockedContext.applicationContext.getSharedPreferences(MAPBOX_SHARED_PREFERENCES, Context.MODE_PRIVATE).getString(MAPBOX_TEST_TELEMETRY_STATE, any()) } returns MAPBOX_TEST_TELEMETRY_ENABLED
+    every { mockedContext.applicationContext.getSharedPreferences(MAPBOX_SHARED_PREFERENCES, Context.MODE_PRIVATE).getString(MAPBOX_TEST_VENDOR_ID, any()) } returns MAPBOX_TEST_VENDOR_ID
+
+    every { mockedContext.applicationContext.registerReceiver(any(), any()) } returns mockk(relaxed = true)
+
     every { mockedContext.applicationContext.getString(any()) } returns "some string"
     every { mockedContext.applicationContext.getResources() } returns mockk(relaxed = true)
     every { localLocationEngine.requestLocationUpdates(mockk(), any(), null) } returns mockk(relaxed = true)
-
     every { mockedContext.getMainLooper() } returns mockk(relaxed = true)
     every { mockedContext.applicationContext.getMainLooper() } returns mockk(relaxed = true)
     every { mockedContext.applicationContext.contentResolver } returns mockk(relaxed = true)
+
     every { mockedContext.applicationContext.getPackageManager() } returns mockk(relaxed = true)
+    every { mockedContext.getPackageManager() } returns mockk(relaxed = true)
+
     every { mockedContext.applicationContext.getPackageName() } returns "MyPackageName"
     every { mockedContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager } returns mockk(relaxed = true)
     every { mockedContext.applicationContext.applicationContext } returns mockk(relaxed = true)

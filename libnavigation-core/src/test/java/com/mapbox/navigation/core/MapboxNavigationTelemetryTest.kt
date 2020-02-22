@@ -9,9 +9,9 @@ import com.mapbox.android.core.location.LocationEngineResult
 import com.mapbox.android.telemetry.MapboxTelemetry
 import com.mapbox.android.telemetry.MapboxTelemetryConstants
 import com.mapbox.android.telemetry.TelemetryEnabler
-import com.mapbox.navigation.core.metrics.MapboxMetricsReporter
 import com.mapbox.navigation.core.telemetry.MapboxNavigationTelemetry
 import com.mapbox.navigation.core.trip.createContext
+import com.mapbox.navigation.metrics.MapboxMetricsReporter
 import com.mapbox.navigation.utils.thread.JobControl
 import com.mapbox.navigation.utils.thread.ThreadController
 import io.mockk.Runs
@@ -63,6 +63,8 @@ class MapboxNavigationTelemetryTest {
 
     @Test
     fun TelemetryInitTest() {
+        every { mockContext.packageManager } returns mockk(relaxed = true)
+        every { mockContext.applicationContext.packageManager } returns mockk(relaxed = true)
         every { mockNavigation.registerOffRouteObserver(any()) } just Runs
         every { mockNavigation.registerRouteProgressObserver(any()) } just Runs
         every { mockNavigation.registerTripSessionStateObserver(any()) } just Runs
@@ -76,9 +78,45 @@ class MapboxNavigationTelemetryTest {
         every { mockedEditor.apply() } just Runs
         // assert that the first call to initialize() returns true and the second returns false
         MapboxNavigationTelemetry.pauseTelemetry(true)
-        val mapboxTelemetry = MapboxMetricsReporter(mockContext, token, "User agent")
-        mapboxTelemetry.init()
-        assert(MapboxNavigationTelemetry.initialize(mockContext, token, mockNavigation, mockLocationEngine, telemetry, mockLocationEngineRequest, mapboxTelemetry))
-        assert(!MapboxNavigationTelemetry.initialize(mockContext, token, mockNavigation, mockLocationEngine, telemetry, mockLocationEngineRequest, mapboxTelemetry))
+        MapboxMetricsReporter.init(mockContext, token, "User agent")
+        assert(MapboxNavigationTelemetry.initialize(mockContext, token, mockNavigation, mockLocationEngine, telemetry, mockLocationEngineRequest, MapboxMetricsReporter))
+        assert(!MapboxNavigationTelemetry.initialize(mockContext, token, mockNavigation, mockLocationEngine, telemetry, mockLocationEngineRequest, MapboxMetricsReporter))
+    }
+
+//    @Test
+//    fun UserTurnstileEventTest() {
+//        every { mockNavigation.registerOffRouteObserver(any()) } just Runs
+//        every { mockNavigation.registerRouteProgressObserver(any()) } just Runs
+//        every { mockNavigation.registerTripSessionStateObserver(any()) } just Runs
+//        every { mockNavigation.registerFasterRouteObserver(any()) } just Runs
+//        every { mockedSharedPreferences.getString("mapboxTelemetryState", any()) } returns "ENABLED"
+//        every { mockContext.getSharedPreferences(MapboxTelemetryConstants.MAPBOX_SHARED_PREFERENCES, Context.MODE_PRIVATE) } returns mockedSharedPreferences
+//        every { mockedSharedPreferences.getString("mapboxTelemetryState", TelemetryEnabler.State.DISABLED.name) } returns TelemetryEnabler.State.DISABLED.name
+//        every { mockedSharedPreferences.getString("mapboxVendorId", "") } returns ""
+//        every { mockedSharedPreferences.edit() } returns mockedEditor
+//        every { mockedEditor.putString(any(), any()) } returns mockedEditor
+//        every { mockedEditor.apply() } just Runs
+//        // assert that the first call to initialize() returns true and the second returns false
+//        MapboxNavigationTelemetry.pauseTelemetry(true)
+//        MapboxMetricsReporter.init(mockContext, token, "User agent")
+//
+//        assert(MapboxNavigationTelemetry.initialize(mockContext, token, mockNavigation, mockLocationEngine, telemetry, mockLocationEngineRequest, MapboxMetricsReporter))
+//        assert(!MapboxNavigationTelemetry.initialize(mockContext, token, mockNavigation, mockLocationEngine, telemetry, mockLocationEngineRequest, MapboxMetricsReporter))
+//    }
+//
+    @Test
+    fun NavigationDepartEventTest() {
+    }
+    @Test
+    fun NavigationFeedbackEventTest() {
+    }
+    @Test
+    fun RerouteEventTest() {
+    }
+    @Test
+    fun FasterRouteEventTest() {
+    }
+    @Test
+    fun ArriveEventTest() {
     }
 }

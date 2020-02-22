@@ -3,8 +3,8 @@ package com.mapbox.navigation.core.telemetry
 import android.annotation.SuppressLint
 import android.os.Parcelable
 import com.google.gson.Gson
-import com.mapbox.navigation.core.metrics.MetricEvent
-import com.mapbox.navigation.core.metrics.NavigationMetrics
+import com.mapbox.navigation.base.metrics.MetricEvent
+import com.mapbox.navigation.base.metrics.NavigationMetrics
 
 @SuppressLint("ParcelCreator")
 internal data class InitialGpsEvent(

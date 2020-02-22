@@ -1,6 +1,7 @@
 package com.mapbox.navigation.core.metrics
 
 import android.annotation.SuppressLint
+import com.mapbox.navigation.base.metrics.NavigationMetrics
 import com.mapbox.navigation.core.telemetry.NavigationEvent
 import com.mapbox.navigation.core.telemetry.PhoneState
 

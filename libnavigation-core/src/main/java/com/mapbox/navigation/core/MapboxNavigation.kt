@@ -32,7 +32,6 @@ import com.mapbox.navigation.core.directions.session.RoutesObserver
 import com.mapbox.navigation.core.directions.session.RoutesRequestCallback
 import com.mapbox.navigation.core.fasterroute.FasterRouteDetector
 import com.mapbox.navigation.core.fasterroute.FasterRouteObserver
-import com.mapbox.navigation.core.metrics.MapboxMetricsReporter
 import com.mapbox.navigation.core.module.NavigationModuleProvider
 import com.mapbox.navigation.core.telemetry.MapboxNavigationTelemetry
 import com.mapbox.navigation.core.trip.service.TripService
@@ -43,6 +42,7 @@ import com.mapbox.navigation.core.trip.session.RouteProgressObserver
 import com.mapbox.navigation.core.trip.session.TripSession
 import com.mapbox.navigation.core.trip.session.TripSessionStateObserver
 import com.mapbox.navigation.core.trip.session.VoiceInstructionsObserver
+import com.mapbox.navigation.metrics.MapboxMetricsReporter
 import com.mapbox.navigation.navigator.MapboxNativeNavigator
 import com.mapbox.navigation.navigator.MapboxNativeNavigatorImpl
 import com.mapbox.navigation.trip.notification.NotificationAction
@@ -151,8 +151,7 @@ constructor(
         directionsSession.registerRoutesObserver(internalRoutesObserver)
         directionsSession.registerRoutesObserver(navigationSession)
         ifNonNull(accessToken) { token ->
-            val mapboxMetricsReporter = MapboxMetricsReporter(context, token, obtainUserAgent())
-            mapboxMetricsReporter.init()
+            MapboxMetricsReporter.init(context, token, obtainUserAgent())
             // Initialize telemetry. This will cause a turnstile event to be sent to the back end servers
             MapboxNavigationTelemetry.initialize(context.applicationContext,
                     token,
@@ -160,7 +159,7 @@ constructor(
                     locationEngine,
                     MapboxTelemetry(context, token, obtainUserAgent()),
                     locationEngineRequest,
-                    mapboxMetricsReporter)
+                    MapboxMetricsReporter)
         }
 
         val notification: TripNotification = NavigationModuleProvider.createModule(

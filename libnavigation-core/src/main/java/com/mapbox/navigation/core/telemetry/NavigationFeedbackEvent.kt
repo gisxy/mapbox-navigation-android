@@ -2,7 +2,7 @@ package com.mapbox.navigation.core.telemetry
 
 import android.annotation.SuppressLint
 import android.location.Location
-import com.mapbox.navigation.core.metrics.NavigationMetrics
+import com.mapbox.navigation.base.metrics.NavigationMetrics
 import com.mapbox.navigation.core.metrics.NavigationStepData
 
 @SuppressLint("ParcelCreator")

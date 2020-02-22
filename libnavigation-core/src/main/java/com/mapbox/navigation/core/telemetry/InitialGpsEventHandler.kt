@@ -1,6 +1,6 @@
 package com.mapbox.navigation.core.telemetry
 
-import com.mapbox.navigation.core.metrics.MetricsReporter
+import com.mapbox.navigation.base.metrics.MetricsReporter
 
 internal class InitialGpsEventHandler(
     private val metricsReporter: MetricsReporter

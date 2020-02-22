@@ -11,12 +11,13 @@ import com.mapbox.android.telemetry.AppUserTurnstile
 import com.mapbox.android.telemetry.MapboxTelemetry
 import com.mapbox.android.telemetry.TelemetryUtils
 import com.mapbox.api.directions.v5.models.DirectionsRoute
+import com.mapbox.navigation.base.metrics.MetricEvent
+import com.mapbox.navigation.base.metrics.MetricsReporter
+import com.mapbox.navigation.base.metrics.NavigationAppUserTurnstileEvent
 import com.mapbox.navigation.base.trip.model.RouteProgressState
 import com.mapbox.navigation.core.BuildConfig
 import com.mapbox.navigation.core.MapboxNavigation
 import com.mapbox.navigation.core.fasterroute.FasterRouteObserver
-import com.mapbox.navigation.core.metrics.MetricEvent
-import com.mapbox.navigation.core.metrics.MetricsReporter
 import com.mapbox.navigation.core.telemetry.telemetryevents.MAPBOX_NAVIGATION_SDK_IDENTIFIER
 import com.mapbox.navigation.core.telemetry.telemetryevents.MAPBOX_NAVIGATION_UI_SDK_IDENTIFIER
 import com.mapbox.navigation.core.telemetry.telemetryevents.MOCK_PROVIDER
