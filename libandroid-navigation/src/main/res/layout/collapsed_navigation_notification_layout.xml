@@ -2,12 +2,13 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/navigationCollapsedNotificationLayout"
     style="@android:style/TextAppearance.StatusBar.EventContent"
     android:layout_width="match_parent"
     android:layout_height="64dp">
 
-    <ImageView
+    <com.mapbox.navigation.ui.instruction.maneuver.ManeuverView
         android:id="@+id/maneuverImage"
         android:layout_width="48dp"
         android:layout_height="48dp"
@@ -17,8 +18,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:src="@drawable/ic_maneuver_arrive"
-        android:tint="@android:color/white"/>
+        app:maneuverViewPrimaryColor="?attr/navigationViewBannerManeuverPrimary"
+        app:maneuverViewSecondaryColor="?attr/navigationViewBannerManeuverSecondary"/>
 
     <TextView
         android:id="@+id/notificationDistanceText"

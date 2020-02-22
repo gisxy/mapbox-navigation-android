@@ -202,10 +202,8 @@ public class InstructionView extends RelativeLayout implements LifecycleObserver
       @Override
       public void onChanged(@Nullable BannerInstructionModel model) {
         if (model != null) {
-          updateManeuverView(model.retrievePrimaryManeuverType(), model.retrievePrimaryManeuverModifier(),
-                  model.retrievePrimaryRoundaboutAngle(), model.retrieveDrivingSide());
-          updateDataFromBannerText(model.retrievePrimaryBannerText(), model.retrieveSecondaryBannerText());
-          updateSubStep(model.retrieveSubBannerText(), model.retrievePrimaryManeuverType());
+          updateBannerInstructions(model.retrievePrimaryBannerText(),
+                  model.retrieveSecondaryBannerText(), model.retrieveSubBannerText(), model.retrieveDrivingSide());
         }
       }
     });
@@ -258,15 +256,17 @@ public class InstructionView extends RelativeLayout implements LifecycleObserver
   }
 
   public void updateBannerInstructionsWith(BannerInstructions instructions) {
-    if (instructions == null || instructions.primary() == null) {
-      return;
+    if (instructions != null) {
+      updateBannerInstructions(instructions.primary(),
+              instructions.secondary(), instructions.sub(), currentStep.drivingSide());
     }
-    BannerText primary = instructions.primary();
-    String primaryManeuverModifier = primary.modifier();
-    String drivingSide = currentStep.drivingSide();
-    updateManeuverView(primary.type(), primaryManeuverModifier, primary.degrees(), drivingSide);
-    updateDataFromBannerText(primary, instructions.secondary());
-    updateSubStep(instructions.sub(), primaryManeuverModifier);
+  }
+
+  private void updateBannerInstructions(BannerText primaryBanner, BannerText secondaryBanner,
+                                        BannerText subBanner, String currentDrivingSide) {
+    updateManeuverView(primaryBanner.type(), primaryBanner.modifier(), primaryBanner.degrees(), currentDrivingSide);
+    updateDataFromBannerText(primaryBanner, secondaryBanner);
+    updateSubStep(subBanner, primaryBanner.modifier());
   }
 
   /**
