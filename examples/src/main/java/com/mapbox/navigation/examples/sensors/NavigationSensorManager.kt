@@ -14,16 +14,18 @@ class NavigationSensorManager(
 
     fun start(eventEmitter: (SensorEvent) -> Unit) {
         this.eventEmitter = eventEmitter
+        sensorList.forEach { sensor ->
+            sensorManager.registerListener(this, sensor, toSamplingPeriodUs(400))
+        }
+    }
+
+    val sensorList: List<Sensor> by lazy {
         val supportedSensorTypes = SensorMapper.getSupportedSensorTypes()
-        val sensorList = sensorManager
-            .getSensorList(Sensor.TYPE_ALL)
+        sensorManager.getSensorList(Sensor.TYPE_ALL)
             .filter { sensor ->
                 supportedSensorTypes.contains(sensor.type)
             }
             .filterNotNull()
-        sensorList.forEach { sensor ->
-            sensorManager.registerListener(this, sensor, toSamplingPeriodUs(400))
-        }
     }
 
     fun stop() {
